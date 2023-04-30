@@ -1,9 +1,15 @@
-import React from "react";
+import React, { Component } from 'react';
 
-export const ImageGalleryItem = ({image, modalHandler}) => {
+export default class ImageGalleryItem extends Component {
+  render() {
     return (
-      <li onClick={modalHandler} className='ImageGalleryItem'>
-        <img src={image.webformatURL} alt={image.largeImageURL} className='ImageGalleryItem-image'/>
-      </li>
+      <li className="ImageGalleryItem" onClick={this.props.onModalOpen}>
+        <img
+          src={this.props.image.webformatURL}
+          alt={this.props.image.largeImageURL}
+          className="ImageGalleryItem-image"
+        />
+        </li>
     );
+  }
 }

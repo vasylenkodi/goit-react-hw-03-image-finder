@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import shortid from 'shortid';
+import api from 'api/api';
 import Searchbar from './Searchbar';
-import { ImageGallery } from './ImageGallery/ImageGallery';
-import Button from './Button';
+import ImageGallery from './ImageGallery/ImageGallery';
 import { Loader } from './Loader/Loader';
-import Modal from './Modal/Modal';
 import '../styles.css';
 
 const PIXABAY_DATA = {
@@ -17,51 +16,36 @@ const URL = `${PIXABAY_DATA.BASE_URL}&key=${PIXABAY_DATA.API_KEY}`;
 
 export default class App extends Component {
   state = {
-    images: [],
-    page: 1,
+    images: null,
+    title: null,
     status: 'idle',
-    imageToOpen: null,
   };
 
-  submitHandler = async title => {
+  onSubmitHandler = async title => {
     try {
-      this.setState({ status: 'pending' });
+      this.setState({ images: null, status: 'pending' });
       const response = await fetch(
         `${PIXABAY_DATA.BASE_URL}?page=${this.state.page}${PIXABAY_DATA.BASE_PARAMETERS}&key=${PIXABAY_DATA.API_KEY}&q=${title}`
       );
       const data = await response.json();
-      this.setState({ images: data.hits, status: 'resolved' });
+      const images = await data.hits;
+      this.setState({ images: images, title: title, status: 'resolved' });
     } catch (error) {
-      this.setState({ status: 'rejected' });
+      this.setState({status: 'rejected'})
     }
   };
 
-  onModalOpen = (event) => {
-    this.setState({ imageToOpen: event.target.alt });
-    console.dir(event.target.alt);
-  }
-
-  nextPage = () => {
-    this.setState(prevState => {
-      return {
-        page: prevState.page + 1,
-      }
-    })
-  };
-
   render() {
-    const pictures = this.state.images;
-
     return [
-      <Searchbar key={shortid.generate()} onSubmit={this.submitHandler} />,
-      <ImageGallery key={shortid.generate()} images={pictures} modalHandler={this.onModalOpen} />,
-      <Button
-        key={shortid.generate()}
-        imagesPresent={this.state.images.length}
-        buttonClickHandler={this.nextPage}
-      />,
-      <Loader key={shortid.generate()} status={this.state.status} />,
-      <Modal key={shortid.generate()} imageUrl={this.state.imageToOpen} />
+      <Searchbar key={shortid.generate()} onSubmit={this.onSubmitHandler} />,
+      this.state.images && (
+        <ImageGallery
+          key={shortid.generate()}
+          images={this.state.images}
+          title={this.state.title}
+        />
+      ),
+      this.state.status === 'pending' && <Loader key={shortid.generate()} />,
     ];
   }
 }

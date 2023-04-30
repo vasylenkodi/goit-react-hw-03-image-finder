@@ -1,16 +1,21 @@
-import React from "react";
+import React from 'react';
 import { RotatingLines } from 'react-loader-spinner';
 
-export const Loader = ({status}) => {
-    if(status === 'pending') {
-        return (
-          <RotatingLines
-            strokeColor="grey"
-            strokeWidth="5"
-            animationDuration="0.75"
-            width="96"
-            visible={true}
-          />
-        );
-    }
-}
+export const Loader = () => {
+  return (
+    <div
+      style={{
+        marginLeft: "auto",
+        marginRight: 'auto',
+        width: "96px",
+      }}
+    >
+      <RotatingLines
+        strokeColor="grey"
+        strokeWidth="5"
+        animationDuration="0.75"
+        width="96"
+      />
+    </div>
+  );
+};
