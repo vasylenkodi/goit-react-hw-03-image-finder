@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export default class Searchbar extends Component {
   state = {
     inputValue: '',
   };
+
+  static propTypes = {
+    onSubmit: PropTypes.func,
+    }
+  
 
   onInputChange = event => {
     const input = event.currentTarget;

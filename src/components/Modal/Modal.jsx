@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export default class Modal extends Component {
+  static propTypes = {
+    imageUrl: PropTypes.string,
+    onModalClose: PropTypes.func,
+    onEscPush: PropTypes.func,
+  }
 
 
 

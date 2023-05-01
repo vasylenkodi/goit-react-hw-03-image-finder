@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 import shortid from 'shortid';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ImageGalleryItem from './ImageGalleryItem/ImageGalleryItem';
 import Button from 'components/Button';
 import { Loader } from 'components/Loader/Loader';
@@ -15,6 +16,11 @@ const PIXABAY_DATA = {
 const URL = `${PIXABAY_DATA.BASE_URL}&key=${PIXABAY_DATA.API_KEY}`;
 
 export default class ImageGallery extends Component {
+  static propTypes = {
+    images: PropTypes.array,
+    title: PropTypes.string,
+  }
+
   state = {
     images: [],
     page: 1,
@@ -67,6 +73,7 @@ export default class ImageGallery extends Component {
   }
 
   render() {
+    console.log(this.props.images);
     return [
       <ul key={shortid.generate()} className="ImageGallery">
         {this.props.images.map(image => {
